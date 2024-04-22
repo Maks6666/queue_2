@@ -1,32 +1,45 @@
-# Розробіть додаток, що імітує чергу запитів до сервера.
-# Мають бути клієнти, які надсилають запити на сервер, кожен
-# з яких має свій пріоритет. Кожен новий клієнт потрапляє у
-# чергу залежно від свого пріоритету. Зберігайте статистику
-# запитів (користувач, час) в окремій черзі.
-# Передбачте виведення статистики на екран. Вибір необхідних структур даних визначте самостійно.
+# Створіть імітаційну модель «Причал морських катерів».
+# Введіть таку інформацію:
+# 1. Середній час між появою пасажирів на причалі у різний
+# час доби;
+# 2. Середній час між появою катерів на причалі у різний час
+# доби;
+# 3. Тип зупинки катера (кінцева або інша).
+
+# Визначіть:
+# 1. Середній час перебування людини на зупинці;
+# 2. Достатній інтервал часу між приходами катерів, коли на
+# зупинці не більше N людей одночасно;
+# 3. Кількість вільних місць у катері є випадковою величиною.
+# Вибір необхідних структур даних визначте самостійно.
 
 
 from queue import PriorityQueue
 
-class WebSite:
+
+class Port:
     def __init__(self):
         self.queue = PriorityQueue()
 
-    def add_user(self, user, time, priority):
-        self.queue.put((priority, user, time))
+    def add_ship(self, stop, time, priority):
+        self.queue.put((priority, stop, time))
+
+    def handle_race(self):
+        if self.queue.empty():
+            print("There is no races")
+            return
+
+        priority, stop, time = self.queue.get()
+
+        print(f'{priority}, {stop}, {time}')
 
 
-    def show(self):
-        if not self.queue.empty():
-            for priority, data, time in self.queue.queue:
-                print(f"Priority: {priority}, username: {data}, time: {time}")
-        else:
-            return False
+solver = Port()
 
-user1 = WebSite()
-user1.add_user("A", "12:00", 5)
+solver.add_ship('Other', "20:32", 2)
+solver.add_ship('Final', "12:21", 3)
+solver.add_ship('Other', "17:15", 1)
 
-user2 = WebSite()
-user1.add_user("B", "13:00", 3)
-
-user1.show()
+solver.handle_race()
+solver.handle_race()
+solver.handle_race()
